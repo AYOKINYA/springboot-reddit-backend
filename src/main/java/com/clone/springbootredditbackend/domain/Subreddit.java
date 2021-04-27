@@ -1,5 +1,6 @@
 package com.clone.springbootredditbackend.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,4 +33,14 @@ public class Subreddit {
     //@JoinColumn 어노테이션을 생략하면 아래와 같은 전략에 따라 외래 키를 매핑합니다.
     //필드명 +  “_” + 참조하는 테이블의 기본 키(@Id) 컬럼명
     private User user;
+
+    @Builder
+    public Subreddit(String name,String description,
+                     List<Post> posts, Instant createdDate, User user) {
+        this.name = name;
+        this.description = description;
+        this.posts = posts;
+        this.createdDate = createdDate;
+        this.user = user;
+    }
 }

@@ -100,4 +100,15 @@ public class AuthService {
         String authenticationToken = jwtProvider.generateToken(authenticate);
         return new AuthenticationResponse(authenticationToken, loginRequest.getUsername());
     }
+
+    @Transactional(readOnly = true)
+    User getCurrentUser() {
+        org.springframework.security.core.userdetails.User principal =
+                (org.springframework.security.core.userdetails.User) SecurityContextHolder
+                .getContext().getAuthentication().getPrincipal();
+
+        return userRepository.findByUsername(principal.getUsername())
+                .orElseThrow(() -> new SpringRedditException("" +
+                        "Username Not Found - " + principal.getUsername()));
+    }
 }
