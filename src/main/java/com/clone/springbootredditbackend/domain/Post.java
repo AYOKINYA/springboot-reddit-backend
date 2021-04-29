@@ -1,7 +1,6 @@
 package com.clone.springbootredditbackend.domain;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -9,6 +8,9 @@ import javax.validation.constraints.NotBlank;
 import java.time.Instant;
 
 @Getter
+@Setter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Post {
