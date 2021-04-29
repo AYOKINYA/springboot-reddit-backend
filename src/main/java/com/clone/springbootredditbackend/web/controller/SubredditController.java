@@ -3,6 +3,8 @@ package com.clone.springbootredditbackend.web.controller;
 import com.clone.springbootredditbackend.service.SubredditService;
 import com.clone.springbootredditbackend.web.dto.SubredditDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,13 +18,17 @@ public class SubredditController {
     private final SubredditService subredditService;
 
     @GetMapping
-    public List<SubredditDto> getAllSubreddits() {
-        return subredditService.getAll();
+    public ResponseEntity<List<SubredditDto>> getAllSubreddits() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(subredditService.getAll());
     }
 
     @GetMapping("/{id}")
-    public SubredditDto getSubreddit(@PathVariable Long id) {
-        return subredditService.getSubreddit(id);
+    public ResponseEntity<SubredditDto> getSubreddit(@PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(subredditService.getSubreddit(id));
     }
 
     @PostMapping

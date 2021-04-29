@@ -1,14 +1,13 @@
 package com.clone.springbootredditbackend.domain;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
 
-@Getter
+@Data
 @NoArgsConstructor
 @Entity
 public class Comment {
