@@ -40,7 +40,12 @@ dependencies {
 
     implementation 'org.mapstruct:mapstruct:1.4.2.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+
+    implementation group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jdk8', version: '1.4.32'
+    testImplementation group: 'org.jetbrains.kotlin', name: 'kotlin-test-junit', version: '1.4.32'
+    implementation group: 'com.github.marlonlom', name: 'timeago', version: '4.0.0'
 }
+
 
 test {
     useJUnitPlatform()
