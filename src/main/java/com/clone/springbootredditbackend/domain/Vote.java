@@ -33,4 +33,8 @@ public class Vote {
         this.post = post;
         this.user = user;
     }
+
+    public void updateVoteType(VoteType voteType) {
+        this.voteType = voteType;
+    }
 }

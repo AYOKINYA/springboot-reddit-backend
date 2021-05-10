@@ -22,15 +22,10 @@ public class VerificationToken {
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
 
-    private Instant expiryDate;
-
     @Builder
     public VerificationToken(String token, User user) {
         this.token = token;
         this.user = user;
     }
 
-    public void updateExpiryDate(Instant expiryDate) {
-        this.expiryDate = expiryDate;
-    }
 }

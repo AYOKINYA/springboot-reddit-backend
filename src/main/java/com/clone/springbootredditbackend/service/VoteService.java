@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static com.clone.springbootredditbackend.domain.VoteType.UPVOTE;
+import static com.clone.springbootredditbackend.domain.VoteType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +32,7 @@ public class VoteService {
 
         Optional<Vote> voteByPostAndUser =
                 voteRepository.findTopByPostAndUserOrderByVoteIdDesc(post, authService.getCurrentUser());
+
         if (voteByPostAndUser.isPresent() &&
         voteByPostAndUser.get().getVoteType().equals(voteDto.getVoteType())) {
             throw new SpringRedditException("You have already " + voteDto.getVoteType() +
@@ -44,6 +45,18 @@ public class VoteService {
         } else {
             System.out.println("voteCount : " + post.getVoteCount());
             post.updateVoteCount(post.getVoteCount() - 1);
+        }
+
+        if (voteByPostAndUser.isPresent() && voteByPostAndUser.get().getVoteType().equals(DOWNVOTE) &&
+                voteDto.getVoteType().equals(UPVOTE)) {
+            System.out.println("HERE");
+            voteDto.setVoteType(ZERO);
+        }
+        if (voteByPostAndUser.isPresent() && voteByPostAndUser.get().getVoteType().equals(UPVOTE) &&
+                voteDto.getVoteType().equals(DOWNVOTE)) {
+            System.out.println("HERE");
+            voteDto.setVoteType(ZERO);
+
         }
 
         voteRepository.save(mapToVote(voteDto, post));
