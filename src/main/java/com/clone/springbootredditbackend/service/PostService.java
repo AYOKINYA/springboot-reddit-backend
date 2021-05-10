@@ -69,4 +69,20 @@ public class PostService {
                 .map(postMapper::mapToDto)
                 .collect(toList());
     }
+
+    @Transactional
+    public void update(Long id, PostRequest postRequest) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(()->new PostNotFoundException(id.toString()));
+
+        post.updatePost(postRequest.getDescription());
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(()->new PostNotFoundException(id.toString()));
+
+        postRepository.delete(post);
+    }
 }

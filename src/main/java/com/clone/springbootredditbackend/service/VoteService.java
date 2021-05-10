@@ -49,12 +49,10 @@ public class VoteService {
 
         if (voteByPostAndUser.isPresent() && voteByPostAndUser.get().getVoteType().equals(DOWNVOTE) &&
                 voteDto.getVoteType().equals(UPVOTE)) {
-            System.out.println("HERE");
             voteDto.setVoteType(ZERO);
         }
         if (voteByPostAndUser.isPresent() && voteByPostAndUser.get().getVoteType().equals(UPVOTE) &&
                 voteDto.getVoteType().equals(DOWNVOTE)) {
-            System.out.println("HERE");
             voteDto.setVoteType(ZERO);
 
         }

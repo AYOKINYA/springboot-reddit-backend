@@ -45,4 +45,16 @@ public class PostController {
         return status(HttpStatus.OK).body(postService.getPostsByUsername(name));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updatePost(@PathVariable Long id, @RequestBody PostRequest postRequest) {
+        postService.update(id, postRequest);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        postService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

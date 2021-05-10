@@ -45,4 +45,9 @@ public class Subreddit {
         this.createdDate = createdDate;
         this.user = user;
     }
+
+    public void updateSubreddit(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }

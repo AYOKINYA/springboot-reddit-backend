@@ -29,4 +29,8 @@ public class Comment {
     @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
 
+    public void updateComment(String text) {
+        this.text = text;
+    }
+
 }

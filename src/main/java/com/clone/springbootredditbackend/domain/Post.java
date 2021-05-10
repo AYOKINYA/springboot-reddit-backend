@@ -45,4 +45,8 @@ public class Post {
     public void updateVoteCount(Integer voteCount) {
         this.voteCount = voteCount;
     }
+
+    public void updatePost(String description) {
+        this.description = description;
+    }
 }

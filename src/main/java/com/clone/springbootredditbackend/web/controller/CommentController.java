@@ -2,6 +2,7 @@ package com.clone.springbootredditbackend.web.controller;
 
 import com.clone.springbootredditbackend.service.CommentService;
 import com.clone.springbootredditbackend.web.dto.CommentDto;
+import com.clone.springbootredditbackend.web.dto.PostRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,5 +35,11 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(commentService.getAllCommentsForUser(userName));
 
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateComment(@PathVariable Long id, @RequestBody CommentDto commentDto) {
+        commentService.update(id, commentDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

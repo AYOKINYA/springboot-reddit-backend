@@ -46,6 +46,22 @@ public class SubredditService {
         return subredditDto;
     }
 
+    @Transactional
+    public void update(Long id, SubredditDto subredditDto) {
+        Subreddit subreddit = subredditRepository.findById(id).orElseThrow(
+                () -> new SpringRedditException("Subreddit not found with id - " + id)
+        );
+        subreddit.updateSubreddit(subredditDto.getName(), subredditDto.getDescription());
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        Subreddit subreddit = subredditRepository.findById(id).orElseThrow(
+                () -> new SpringRedditException("Subreddit not found with id - " + id)
+        );
+        subredditRepository.delete(subreddit);
+    }
+
 //   private SubredditDto mapToDto(Subreddit subreddit) {
 //        return SubredditDto.builder()
 //                .name(subreddit.getName())

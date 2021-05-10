@@ -4,6 +4,7 @@ import com.clone.springbootredditbackend.Exception.PostNotFoundException;
 import com.clone.springbootredditbackend.domain.*;
 import com.clone.springbootredditbackend.mapper.CommentMapper;
 import com.clone.springbootredditbackend.web.dto.CommentDto;
+import com.clone.springbootredditbackend.web.dto.PostRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -62,5 +63,12 @@ public class CommentService {
         return commentRepository.findAllByUser(user)
                 .stream().map(commentMapper::mapToDto)
                 .collect(Collectors.toList());
+    }
+
+    public void update(Long id, CommentDto commentDto) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException(id.toString()));
+
+        comment.updateComment(commentDto.getText());
     }
 }

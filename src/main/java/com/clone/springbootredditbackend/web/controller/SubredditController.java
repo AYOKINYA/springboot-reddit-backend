@@ -35,4 +35,18 @@ public class SubredditController {
     public SubredditDto create(@RequestBody @Valid SubredditDto subredditDto) {
         return subredditService.save(subredditDto);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<SubredditDto> update(@PathVariable Long id, @RequestBody @Valid SubredditDto subredditDto) {
+        subredditService.update(id, subredditDto);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(subredditService.getSubreddit(id));
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        subredditService.delete(id);
+    }
 }
