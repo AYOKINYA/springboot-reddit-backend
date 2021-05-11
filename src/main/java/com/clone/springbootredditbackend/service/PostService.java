@@ -75,7 +75,11 @@ public class PostService {
         Post post = postRepository.findById(id)
                 .orElseThrow(()->new PostNotFoundException(id.toString()));
 
-        post.updatePost(postRequest.getDescription());
+        Subreddit subreddit =
+                subredditRepository.findByName(postRequest.getSubredditName())
+                        .orElseThrow(() -> new SubredditNotFoundException(postRequest.getSubredditName()));
+
+        post.updatePost(postRequest.getSubredditName(), postRequest.getDescription(), postRequest.getUrl(), subreddit);
     }
 
     @Transactional

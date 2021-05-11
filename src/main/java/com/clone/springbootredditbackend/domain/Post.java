@@ -53,7 +53,11 @@ public class Post {
         this.voteCount = voteCount;
     }
 
-    public void updatePost(String description) {
+    public void updatePost(String postName, String description, String url, Subreddit subreddit) {
+
+        this.postName = postName;
         this.description = description;
+        this.url = url;
+        this.subreddit = subreddit;
     }
 }
