@@ -151,7 +151,6 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public User getCurrentUser() {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
         UserDetailsImpl principal = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

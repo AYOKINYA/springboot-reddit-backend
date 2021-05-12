@@ -1,6 +1,7 @@
 package com.clone.springbootredditbackend.security;
 
 import com.clone.springbootredditbackend.Exception.SpringRedditException;
+import com.clone.springbootredditbackend.domain.ERole;
 import com.clone.springbootredditbackend.domain.User;
 import com.clone.springbootredditbackend.domain.UserRepository;
 
@@ -49,8 +50,6 @@ public class JWTProvider {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        System.out.println(roles);
-
         return Jwts.builder()
                 .setSubject(principal.getUsername())
                 .setIssuedAt(Date.from(Instant.now()))
@@ -67,10 +66,14 @@ public class JWTProvider {
                 .orElseThrow(() -> new UsernameNotFoundException("No user " +
                         "Found with username : " + username));
 
+        List<ERole> roles = user.getRoles().stream()
+                .map(item -> item.getName())
+                .collect(Collectors.toList());
+
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(Date.from(Instant.now()))
-                .claim("scopes", user.getRoles())
+                .claim("scopes", roles)
                 .signWith(getPrivateKey())
                 .setExpiration(Date.from(Instant.now().plusMillis(jwtExpirationInMillis)))
                 .compact();
