@@ -54,7 +54,6 @@ public class Post {
     }
 
     public void updatePost(String postName, String description, String url, Subreddit subreddit) {
-
         this.postName = postName;
         this.description = description;
         this.url = url;

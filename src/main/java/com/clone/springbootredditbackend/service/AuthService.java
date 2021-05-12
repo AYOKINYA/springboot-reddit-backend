@@ -3,10 +3,9 @@ package com.clone.springbootredditbackend.service;
 import com.clone.springbootredditbackend.Exception.SpringRedditException;
 import com.clone.springbootredditbackend.domain.*;
 import com.clone.springbootredditbackend.security.JWTProvider;
-import com.clone.springbootredditbackend.web.dto.AuthenticationResponse;
-import com.clone.springbootredditbackend.web.dto.LoginRequest;
-import com.clone.springbootredditbackend.web.dto.RefreshTokenRequest;
-import com.clone.springbootredditbackend.web.dto.RegisterRequest;
+import com.clone.springbootredditbackend.security.UserDetailsImpl;
+import com.clone.springbootredditbackend.web.dto.*;
+import jdk.nashorn.internal.parser.JSONParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -14,12 +13,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import static com.clone.springbootredditbackend.util.Constants.ACTIVATION_EMAIL;
@@ -39,8 +41,15 @@ public class AuthService {
     private final JWTProvider jwtProvider;
     private final RefreshTokenService refreshTokenService;
 
+    private final RoleRepository roleRepository;
+
     @Transactional
     public void signup(RegisterRequest registerRequest) {
+
+        Set<Role> defaultRoles = new HashSet<>();
+        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        defaultRoles.add(userRole);
 
         User user = User.builder()
                 .username(registerRequest.getUsername())
@@ -48,6 +57,7 @@ public class AuthService {
                 .email(registerRequest.getEmail())
                 .created(Instant.now())
                 .enabled(false)
+                .roles(defaultRoles)
                 .build();
 
         userRepository.save(user);
@@ -120,11 +130,30 @@ public class AuthService {
                 .build();
     }
 
+    public AuthenticationResponse beAdmin(AdminRequest adminRequest) {
+
+        Set<Role> Roles = getCurrentUser().getRoles();
+        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        Roles.add(adminRole);
+        getCurrentUser().updateRoles(Roles);
+
+        String token = jwtProvider.generateTokenWithUserName(adminRequest.getUsername());
+        refreshTokenService.validateRefreshToken(adminRequest.getRefreshToken());
+        return AuthenticationResponse.builder()
+                .authenticationToken(token)
+                .refreshToken(adminRequest.getRefreshToken())
+                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .username(adminRequest.getUsername())
+                .build();
+    }
+
+
     @Transactional(readOnly = true)
     public User getCurrentUser() {
-        org.springframework.security.core.userdetails.User principal =
-                (org.springframework.security.core.userdetails.User) SecurityContextHolder
-                .getContext().getAuthentication().getPrincipal();
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+
+        UserDetailsImpl principal = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         return userRepository.findByUsername(principal.getUsername())
                 .orElseThrow(() -> new SpringRedditException("" +

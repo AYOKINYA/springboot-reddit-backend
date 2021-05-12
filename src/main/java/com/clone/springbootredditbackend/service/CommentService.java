@@ -1,6 +1,7 @@
 package com.clone.springbootredditbackend.service;
 
 import com.clone.springbootredditbackend.Exception.PostNotFoundException;
+import com.clone.springbootredditbackend.Exception.SpringRedditException;
 import com.clone.springbootredditbackend.domain.*;
 import com.clone.springbootredditbackend.mapper.CommentMapper;
 import com.clone.springbootredditbackend.web.dto.CommentDto;
@@ -70,5 +71,12 @@ public class CommentService {
                 .orElseThrow(() -> new UsernameNotFoundException(id.toString()));
 
         comment.updateComment(commentDto.getText());
+    }
+
+    public void delete(Long id) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(()->new SpringRedditException(id.toString()));
+
+        commentRepository.delete(comment);
     }
 }

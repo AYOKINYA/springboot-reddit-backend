@@ -2,16 +2,14 @@ package com.clone.springbootredditbackend.web.controller;
 
 import com.clone.springbootredditbackend.service.AuthService;
 import com.clone.springbootredditbackend.service.RefreshTokenService;
-import com.clone.springbootredditbackend.web.dto.AuthenticationResponse;
-import com.clone.springbootredditbackend.web.dto.LoginRequest;
-import com.clone.springbootredditbackend.web.dto.RefreshTokenRequest;
-import com.clone.springbootredditbackend.web.dto.RegisterRequest;
+import com.clone.springbootredditbackend.web.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Null;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -46,5 +44,16 @@ public class AuthController {
     public ResponseEntity<String> logout(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
         refreshTokenService.deleteRefreshToken(refreshTokenRequest.getRefreshToken());
         return ResponseEntity.status(HttpStatus.OK).body("Refresh Token Deleted Successfully!");
+    }
+
+    @PostMapping("/admin")
+    public ResponseEntity<?> admin(@RequestBody AdminRequest adminRequest) {
+
+        if (!adminRequest.getAdminSpell().equals("I_am_Admin"))
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No Right to be Admin");
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(authService.beAdmin(adminRequest));
     }
 }
