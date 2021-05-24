@@ -4,6 +4,8 @@
 
 구현 기술 :
 
+![tech](https://user-images.githubusercontent.com/61648489/119351479-744d1300-bcdb-11eb-84f6-3bfbfe36ef9d.png)
+
 기술 사용 이유
 
 - react : 프론트를 구현할 때 가장 쉬운 방법이라고 생각해 사용
