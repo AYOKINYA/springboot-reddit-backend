@@ -54,7 +54,6 @@ public class VoteService {
         if (voteByPostAndUser.isPresent() && voteByPostAndUser.get().getVoteType().equals(UPVOTE) &&
                 voteDto.getVoteType().equals(DOWNVOTE)) {
             voteDto.setVoteType(ZERO);
-
         }
 
         voteRepository.save(mapToVote(voteDto, post));

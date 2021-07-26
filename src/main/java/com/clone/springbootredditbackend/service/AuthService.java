@@ -5,7 +5,6 @@ import com.clone.springbootredditbackend.domain.*;
 import com.clone.springbootredditbackend.security.JWTProvider;
 import com.clone.springbootredditbackend.security.UserDetailsImpl;
 import com.clone.springbootredditbackend.web.dto.*;
-import jdk.nashorn.internal.parser.JSONParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -151,7 +150,6 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public User getCurrentUser() {
-
         UserDetailsImpl principal = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         return userRepository.findByUsername(principal.getUsername())
